@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Mapillary Traffic Sign & Image ID Copier",
   "version": "0.1",
-  "description": "Erkennt automatisch Mapillary Image IDs und deutsche Verkehrszeichen, kopiert sie formatiert in die Zwischenablage und öffnet das OSM Traffic Sign Tool.",
+  "description": "Erkennt Mapillary Image IDs und Verkehrszeichen, kopiert sie formatiert in die Zwischenablage und öffnet das Traffic Sign Tool.",
   "permissions": [
     "scripting",
     "activeTab",
