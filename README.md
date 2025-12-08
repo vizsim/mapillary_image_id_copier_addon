@@ -25,13 +25,34 @@ Die Erweiterung erkennt folgende deutsche Verkehrszeichen:
 
 ## Installation
 
-### Aus dem Quellcode (Entwicklermodus)
+### Aus einem Release (Empfohlen)
 
-1. Repository klonen oder als ZIP herunterladen
-2. Chrome öffnen und zu `chrome://extensions/` navigieren
-3. "Entwicklermodus" aktivieren (oben rechts)
-4. "Entpackte Erweiterung laden" klicken
-5. Den Ordner `mapillary_image_id` auswählen
+Die einfachste Methode: Lade eine fertige Version herunter.
+
+1. Gehe zu den [Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/releases)
+2. Lade die neueste Version als ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.1.zip`)
+3. Entpacke die ZIP-Datei in einen Ordner
+4. Öffne Chrome und navigiere zu `chrome://extensions/`
+5. Aktiviere den **"Entwicklermodus"** (Schalter oben rechts)
+6. Klicke auf **"Entpackte Erweiterung laden"**
+7. Wähle den entpackten Ordner aus
+
+Die Extension ist jetzt installiert und einsatzbereit.
+
+### Aus dem Quellcode
+
+Für Entwickler oder wenn du den neuesten Code testen möchtest.
+
+1. Klone das Repository oder lade es als ZIP herunter:
+   ```bash
+   git clone https://github.com/vizsim/mapillary_image_id_copier_addon.git
+   ```
+2. Öffne Chrome und navigiere zu `chrome://extensions/`
+3. Aktiviere den **"Entwicklermodus"** (Schalter oben rechts)
+4. Klicke auf **"Entpackte Erweiterung laden"**
+5. Wähle den Projektordner aus
+
+**Hinweis:** Bei Änderungen am Code musst du die Extension in `chrome://extensions/` neu laden (Klick auf das Aktualisieren-Icon).
 
 ### Aus dem Chrome Web Store
 
@@ -98,13 +119,17 @@ Die Erweiterung benötigt folgende Berechtigungen:
 ### Projektstruktur
 
 ```
-mapillary_image_id/
+mapillary_image_id_copier_addon/
 ├── manifest.json          # Extension Manifest
 ├── service-worker.js      # Service Worker (Hauptlogik)
-├── logo.png               # Icon
+├── options.html           # Options-Seite (HTML)
+├── options.js             # Options-Seite (JavaScript)
+├── logo.png               # Extension Icon
 ├── LICENSE                # MIT License
-├── .gitignore            # Git ignore rules
-└── README.md             # Diese Datei
+├── README.md              # Diese Datei
+├── CHANGELOG.md           # Änderungsprotokoll
+├── releases/              # Build-Artefakte (ZIP-Dateien)
+└── .gitignore            # Git ignore rules
 ```
 
 ### Technische Details
@@ -121,11 +146,4 @@ MIT License - siehe [LICENSE](LICENSE) Datei für Details.
 
 Beiträge sind willkommen! Bitte öffne ein Issue oder einen Pull Request.
 
-## Changelog
-
-### Version 0.1
-- Initiale Veröffentlichung
-- Automatische Erkennung von Mapillary Image IDs
-- Unterstützung für 6 verschiedene Verkehrszeichen und eine Kombination
-- Integration mit OSM Traffic Sign Tool
 
