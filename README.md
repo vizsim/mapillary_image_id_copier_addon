@@ -29,8 +29,8 @@ Die Erweiterung erkennt folgende deutsche Verkehrszeichen:
 
 Die einfachste Methode: Lade eine fertige Version herunter.
 
-1. Gehe zu den [Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/releases)
-2. Lade die neueste Version als ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.1.zip`)
+1. Gehe zu den [Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/tree/main/releases)
+2. Lade die neueste Version als ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.2.zip`)
 3. Entpacke die ZIP-Datei in einen Ordner
 4. Öffne Chrome und navigiere zu `chrome://extensions/`
 5. Aktiviere den **"Entwicklermodus"** (Schalter oben rechts)

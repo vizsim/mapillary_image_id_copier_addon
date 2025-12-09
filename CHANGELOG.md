@@ -5,6 +5,24 @@ Alle bemerkenswerten Änderungen an diesem Projekt werden in dieser Datei dokume
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.2] - 2025-12-09
+
+### Geändert
+- Anpassung aller Verkehrszeichen-Erkennung an das neue Mapillary Sprite-Sheet (Dezember 2025)
+- Alle clip-Werte für die unterstützten Verkehrszeichen aktualisiert:
+  - DE:240 - Gemeinsamer Geh- und Radweg
+  - DE:237 - Radweg
+  - DE:241-30 - Getrennter Rad- und Gehweg (Radweg links)
+  - DE:241-31 - Getrennter Rad- und Gehweg (Radweg rechts)
+  - DE:239 - Gehweg
+  - DE:1022-10 - Radfahrer frei
+
+### Technisch
+- Code-Refactoring: Verkehrszeichen-Mappings in zentrales `TRAFFIC_SIGN_MAPPING` Array verschoben
+- Sprite-Sheet-URL dokumentiert: `https://external.xx.fbcdn.net/maps/vt/sprites/mapillary_sprites.png`
+- Alte clip-Werte auskommentiert (für Referenz/Dokumentation)
+- Verbesserte clip-Wert-Erkennung mit Normalisierung (unabhängig von Leerzeichen)
+
 ## [0.1] - 2025-12-08
 
 ### Hinzugefügt

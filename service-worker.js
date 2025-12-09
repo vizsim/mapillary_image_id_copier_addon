@@ -2,10 +2,90 @@
 const BADGE_DISPLAY_DURATION = 2000; // Anzeigedauer für Badges in Millisekunden
 const BADGE_COLORS = {
   ERROR: '#ff0000',
-  SUCCESS: '#00ff00'
+  SUCCESS: '#00ff00',
+  WARNING: '#ffaa00'
 };
 const MAPILLARY_DOMAIN = 'mapillary.com';
 const TRAFFIC_SIGN_TOOL_BASE_URL = 'https://trafficsigns.osm-verkehrswende.org/DE?signs=';
+
+/**
+ * Sprite-Sheet URL für Mapillary Verkehrszeichen
+ * 
+ * Die offizielle Sprite-Sheet-URL, die von Mapillary verwendet wird.
+ * Diese URL kann sich ändern, wenn Mapillary das Sprite-Sheet aktualisiert.
+ * 
+ * @see https://external.xx.fbcdn.net/maps/vt/sprites/mapillary_sprites.png
+ * @see Web Archive zur Nachverfolgung von Änderungen (siehe README)
+ */
+const MAPILLARY_SPRITE_SHEET_URL = 'https://external.xx.fbcdn.net/maps/vt/sprites/mapillary_sprites.png';
+
+/**
+ * Mapping von clip CSS-Werten zu Verkehrszeichen-Codes
+ * 
+ * Jedes Verkehrszeichen wird durch eine spezifische clip-Eigenschaft identifiziert,
+ * die die Position im Sprite-Sheet angibt. Die Werte können sich ändern, wenn
+ * Mapillary das Sprite-Sheet aktualisiert.
+ * 
+ * Format: rect(top, right, bottom, left)
+ * 
+ * @type {Array<{code: string, name: string, clips: string[], description: string}>}
+ */
+const TRAFFIC_SIGN_MAPPING = [
+  {
+    code: 'DE:240',
+    name: 'Gemeinsamer Geh- und Radweg',
+    description: 'shared path pedestrians and bicycles (g1)',
+    clips: [
+      // 'rect(0px, 576px, 24px, 552px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
+      'rect(0px, 624px, 24px, 600px)'    // Neue Version (Dezember 2025)
+    ]
+  },
+  {
+    code: 'DE:237',
+    name: 'Radweg',
+    description: 'Regulatory: Bicycles only (g1)',
+    clips: [
+      // 'rect(360px, 648px, 384px, 624px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
+      'rect(360px, 528px, 384px, 504px)'    // Neue Version (Dezember 2025)
+    ]
+  },
+  {
+    code: 'DE:241-30',
+    name: 'Getrennter Rad- und Gehweg (Radweg links)',
+    description: 'Regulatory: Dual path bicycles and pedestrians (g1)',
+    clips: [
+      // 'rect(24px, 1863px, 48px, 1839px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
+      'rect(72px, 1120px, 96px, 1096px)'    // Neue Version (Dezember 2025)
+    ]
+  },
+  {
+    code: 'DE:241-31',
+    name: 'Getrennter Rad- und Gehweg (Radweg rechts)',
+    description: 'Regulatory: Dual path pedestrians and bicycles (g1)',
+    clips: [
+      // 'rect(922px, 108px, 946px, 84px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
+      'rect(954px, 324px, 978px, 300px)'    // Neue Version (Dezember 2025)
+    ]
+  },
+  {
+    code: 'DE:239',
+    name: 'Gehweg',
+    description: 'Regulatory: Pedestrians only (g1)',
+    clips: [
+      // 'rect(624px, 870px, 648px, 846px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
+      'rect(688px, 168px, 712px, 144px)'     // Neue Version (Dezember 2025)
+    ]
+  },
+  {
+    code: 'DE:1022-10',
+    name: 'Radfahrer frei',
+    description: 'Complementary: Except bicycles (g1)',
+    clips: [
+      // 'rect(982px, 960px, 1006px, 936px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
+      'rect(24px, 1263px, 48px, 1239px)'     // Neue Version (Dezember 2025)
+    ]
+  }
+];
 
 /**
  * Zeigt ein Badge am Extension-Icon an
@@ -62,11 +142,13 @@ chrome.action.onClicked.addListener(async (tab) => {
         showBadge(tab.id, "!", BADGE_COLORS.ERROR);
         return;
       }
-  
+
       // Verkehrszeichen-Typ aus dem DOM ermitteln
+      // Übergib das Mapping als Argument, da detectTrafficSign im Tab-Kontext läuft
       const trafficSignResult = await chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        func: detectTrafficSign
+        func: detectTrafficSign,
+        args: [TRAFFIC_SIGN_MAPPING]
       });
 
       // Der Rückgabewert ist ein Array von InjectionResult Objekten
@@ -74,7 +156,13 @@ chrome.action.onClicked.addListener(async (tab) => {
       let trafficSign = '';
       if (trafficSignResult && Array.isArray(trafficSignResult) && trafficSignResult.length > 0) {
         const result = trafficSignResult[0].result;
-        if (typeof result === 'string') {
+        
+        // Neues Format: { trafficSign: string, unknownClips: string[] }
+        if (result && typeof result === 'object' && 'trafficSign' in result) {
+          trafficSign = result.trafficSign || '';
+          // Unbekannte clip-Werte werden in der Konsole geloggt (für Entwickler)
+        } else if (typeof result === 'string') {
+          // Altes Format (für Rückwärtskompatibilität)
           trafficSign = result;
         } else if (result !== null && result !== undefined) {
           trafficSign = String(result);
@@ -153,9 +241,37 @@ chrome.action.onClicked.addListener(async (tab) => {
    * Funktion, die im Tab-Kontext ausgeführt wird, um das Verkehrszeichen zu erkennen
    * Identifiziert Verkehrszeichen über die clip CSS-Eigenschaft der Bilder
    * 
+   * @param {Array} trafficSignMapping - Das Mapping von clip-Werten zu Verkehrszeichen-Codes
    * @returns {string} - Der Verkehrszeichen-Code (z.B. "DE:240") oder leerer String wenn nichts gefunden wurde
    */
-  function detectTrafficSign() {
+  function detectTrafficSign(trafficSignMapping) {
+    /**
+     * Prüft, ob ein clip-Wert zu einem Verkehrszeichen passt
+     * @param {string} clip - Der clip CSS-Wert
+     * @param {string[]} clips - Array von erwarteten clip-Werten
+     * @returns {boolean}
+     */
+    function matchesClip(clip, clips) {
+      // Normalisiere clip-Wert (entferne Leerzeichen) für Vergleich
+      // CSS-Werte können theoretisch mit/ohne Leerzeichen sein, aber wir normalisieren für konsistenten Vergleich
+      const normalizedClip = clip.replace(/\s+/g, '');
+      
+      // Prüfe gegen alle erwarteten clip-Werte (auch normalisiert)
+      for (const expectedClip of clips) {
+        // Überspringe auskommentierte Werte (sollten nicht vorkommen, aber sicherheitshalber)
+        if (typeof expectedClip !== 'string') continue;
+        
+        const normalizedExpected = expectedClip.replace(/\s+/g, '');
+        
+        // Exakte Übereinstimmung nach Normalisierung
+        if (normalizedClip === normalizedExpected) {
+          return true;
+        }
+      }
+      
+      return false;
+    }
+
     try {
       const imgs = document.querySelectorAll('.mapillary-tag-symbol img');
       const foundSigns = new Set(); // Sammle alle gefundenen Verkehrszeichen
@@ -164,18 +280,18 @@ chrome.action.onClicked.addListener(async (tab) => {
         // Lese clip-Eigenschaft - versuche verschiedene Methoden
         let clip = '';
         
-        // Methode 1: Direkt aus style.clip
-        if (img.style && img.style.clip) {
-          clip = img.style.clip;
-        }
-        
-        // Methode 2: Aus dem style-Attribut parsen
-        if (!clip && img.getAttribute('style')) {
+        // Methode 1: Aus dem style-Attribut parsen (meist zuverlässigste Methode)
+        if (img.getAttribute('style')) {
           const styleAttr = img.getAttribute('style');
           const clipMatch = styleAttr.match(/clip:\s*([^;]+)/);
           if (clipMatch) {
             clip = clipMatch[1].trim();
           }
+        }
+        
+        // Methode 2: Direkt aus style.clip
+        if (!clip && img.style && img.style.clip) {
+          clip = img.style.clip;
         }
         
         // Methode 3: getPropertyValue
@@ -187,52 +303,18 @@ chrome.action.onClicked.addListener(async (tab) => {
         if (clip && clip !== 'auto' && clip !== 'none') {
           clip = clip.trim();
           
-          // shared path pedestrians and bicycles (g1) 
-          // DE:240 
-          if (clip === 'rect(0px, 576px, 24px, 552px)' || 
-              clip === 'rect(0px,576px,24px,552px)' ||
-              clip.match(/0px[,\s]+576px[,\s]+24px[,\s]+552px/)) {
-            foundSigns.add('DE:240');
+          // Durchsuche alle Verkehrszeichen-Mappings
+          for (const sign of trafficSignMapping) {
+            if (matchesClip(clip, sign.clips)) {
+              foundSigns.add(sign.code);
+              break; // Gefunden, weiter zum nächsten Bild
+            }
           }
-
-          // bicycles only (g1) 
-          // DE:237
-          if (clip === 'rect(360px, 648px, 384px, 624px)' || 
-              clip === 'rect(360px,648px,384px,624px)' ||
-              clip.match(/360px[,\s]+648px[,\s]+384px[,\s]+624px/)) {
-            foundSigns.add('DE:237');
-          }
-
-          // Regulatory: Dual path bicycles and pedestrians (g1)
-          // DE:241-30
-          if (clip === 'rect(24px, 1863px, 48px, 1839px)' || 
-              clip === 'rect(24px,1863px,48px,1839px)' ||
-              clip.match(/24px[,\s]+1863px[,\s]+48px[,\s]+1839px/)) {
-            foundSigns.add('DE:241-30');
-          }
-
-          // Regulatory: Dual path pedestrians and bicycles (g1)
-          // DE:241-31
-          if (clip === 'rect(922px, 108px, 946px, 84px)' || 
-              clip === 'rect(922px,108px,946px,84px)' ||
-              clip.match(/922px[,\s]+108px[,\s]+946px[,\s]+84px/)) {
-            foundSigns.add('DE:241-31');
-          }
-
-          // Regulatory: Pedestrians only (g1)
-          // DE:239
-          if (clip === 'rect(624px, 870px, 648px, 846px)' || 
-              clip === 'rect(624px,870px,648px,846px)' ||
-              clip.match(/624px[,\s]+870px[,\s]+648px[,\s]+846px/)) {
-            foundSigns.add('DE:239');
-          }
-
-          // Complementary: Except bicycles (g1)
-          // DE:1022-10
-          if (clip === 'rect(982px, 960px, 1006px, 936px)' || 
-              clip === 'rect(982px,960px,1006px,936px)' ||
-              clip.match(/982px[,\s]+960px[,\s]+1006px[,\s]+936px/)) {
-            foundSigns.add('DE:1022-10');
+          
+          // Logge unbekannte clip-Werte in die Konsole (für Entwickler)
+          const isKnown = trafficSignMapping.some(sign => matchesClip(clip, sign.clips));
+          if (!isKnown) {
+            console.log('Unbekannter clip-Wert gefunden:', clip);
           }
         }
       }
@@ -254,6 +336,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 
     } catch (e) {
       // Fehler beim Erkennen - gebe leeren String zurück
+      console.error('Fehler bei Verkehrszeichen-Erkennung:', e);
     }
 
     return '';
