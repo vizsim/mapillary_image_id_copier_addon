@@ -84,22 +84,61 @@ const TRAFFIC_SIGN_MAPPING = [
       // 'rect(982px, 960px, 1006px, 936px)',   // Alte Version (auskommentiert - könnte jetzt falsches Icon sein)
       'rect(24px, 1263px, 48px, 1239px)'     // Neue Version (Dezember 2025)
     ]
+  },
+  {
+    code: 'DE:1000-31',
+    name: 'Beide Richtungen',
+    description: 'Complementary: Two way traffic (g3)',
+    clips: [
+      'rect(264px, 888px, 288px, 864px)'     // Neue Version (Dezember 2025)
+    ]
   }
 ];
 
 /**
  * Zeigt ein Badge am Extension-Icon an
- * @param {number} tabId - Die Tab-ID
+ * @param {number|undefined} tabId - Die Tab-ID
  * @param {string} text - Der Badge-Text
  * @param {string} color - Die Badge-Farbe (z.B. "#ff0000")
  * @param {number} duration - Anzeigedauer in Millisekunden
  */
-function showBadge(tabId, text, color, duration = BADGE_DISPLAY_DURATION) {
-  chrome.action.setBadgeText({ text, tabId });
-  chrome.action.setBadgeBackgroundColor({ color });
-  setTimeout(() => {
-    chrome.action.setBadgeText({ text: "", tabId });
-  }, duration);
+async function showBadge(tabId, text, color, duration = BADGE_DISPLAY_DURATION) {
+  try {
+    // Prüfe ob tabId gültig ist
+    if (tabId === undefined || tabId === null) {
+      // Fallback: Badge für alle Tabs setzen
+      chrome.action.setBadgeText({ text });
+      chrome.action.setBadgeBackgroundColor({ color });
+      setTimeout(() => {
+        chrome.action.setBadgeText({ text: "" });
+      }, duration);
+      return;
+    }
+
+    // Prüfe ob Tab noch existiert
+    try {
+      await chrome.tabs.get(tabId);
+    } catch (e) {
+      // Tab existiert nicht mehr - verwende Fallback
+      chrome.action.setBadgeText({ text });
+      chrome.action.setBadgeBackgroundColor({ color });
+      setTimeout(() => {
+        chrome.action.setBadgeText({ text: "" });
+      }, duration);
+      return;
+    }
+
+    chrome.action.setBadgeText({ text, tabId });
+    chrome.action.setBadgeBackgroundColor({ color });
+    setTimeout(() => {
+      chrome.action.setBadgeText({ text: "", tabId }).catch(() => {
+        // Ignoriere Fehler beim Entfernen des Badges
+      });
+    }, duration);
+  } catch (err) {
+    // Fehler beim Setzen des Badges - logge aber nicht, um Spam zu vermeiden
+    console.debug('Fehler beim Setzen des Badges:', err);
+  }
 }
 
 /**
@@ -117,6 +156,18 @@ function isMapillaryUrl(url) {
 }
 
 /**
+ * Service Worker Initialisierung
+ * Stellt sicher, dass der Service Worker korrekt geladen ist
+ */
+chrome.runtime.onInstalled.addListener(() => {
+  console.log('Add-on: Service Worker initialisiert');
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  console.log('Add-on: Service Worker gestartet');
+});
+
+/**
  * Hauptfunktion: Reagiert auf Klick auf das Add-on-Icon
  * Extrahiert Mapillary Image ID und Verkehrszeichen, kopiert sie in die Zwischenablage
  * und öffnet das OSM Traffic Sign Tool
@@ -125,13 +176,15 @@ chrome.action.onClicked.addListener(async (tab) => {
     try {
       // Prüfe ob Tab und URL vorhanden sind
       if (!tab || !tab.url) {
-        showBadge(tab?.id, "!", BADGE_COLORS.ERROR);
+        await showBadge(tab?.id, "!", BADGE_COLORS.ERROR);
+        console.warn('Add-on: Tab oder URL fehlt', { tab: tab?.id, url: tab?.url });
         return;
       }
 
       // Prüfe ob es eine Mapillary-URL ist
       if (!isMapillaryUrl(tab.url)) {
-        showBadge(tab.id, "!", BADGE_COLORS.ERROR);
+        await showBadge(tab.id, "!", BADGE_COLORS.ERROR);
+        console.warn('Add-on: Keine Mapillary-URL', { url: tab.url });
         return;
       }
   
@@ -139,17 +192,26 @@ chrome.action.onClicked.addListener(async (tab) => {
       const pkeyValue = extractPkey(url);
   
       if (!pkeyValue) {
-        showBadge(tab.id, "!", BADGE_COLORS.ERROR);
+        await showBadge(tab.id, "!", BADGE_COLORS.ERROR);
+        console.warn('Add-on: pkey nicht gefunden', { url: tab.url });
         return;
       }
 
       // Verkehrszeichen-Typ aus dem DOM ermitteln
       // Übergib das Mapping als Argument, da detectTrafficSign im Tab-Kontext läuft
-      const trafficSignResult = await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: detectTrafficSign,
-        args: [TRAFFIC_SIGN_MAPPING]
-      });
+      let trafficSignResult;
+      try {
+        trafficSignResult = await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: detectTrafficSign,
+          args: [TRAFFIC_SIGN_MAPPING]
+        });
+      } catch (scriptError) {
+        // Tab könnte geschlossen worden sein oder Seite nicht erreichbar
+        console.error('Add-on: Fehler beim Ausführen des Scripts', scriptError);
+        await showBadge(tab.id, "!", BADGE_COLORS.ERROR);
+        return;
+      }
 
       // Der Rückgabewert ist ein Array von InjectionResult Objekten
       // Jedes Objekt hat eine 'result' Property mit dem tatsächlichen Rückgabewert
@@ -207,11 +269,16 @@ chrome.action.onClicked.addListener(async (tab) => {
 
       // In Zwischenablage kopieren über Content Script
       // (Service Worker kann nicht direkt auf Clipboard zugreifen)
-      await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: copyToClipboard,
-        args: [formattedValue]
-      });
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: copyToClipboard,
+          args: [formattedValue]
+        });
+      } catch (clipboardError) {
+        console.error('Add-on: Fehler beim Kopieren in Zwischenablage', clipboardError);
+        // Versuche trotzdem fortzufahren - Tab könnte noch geöffnet werden
+      }
   
       // Öffne neuen Tab mit Traffic Sign Tool URL im Hintergrund, falls ein Verkehrszeichen gefunden wurde
       // Nur wenn die Option aktiviert ist
@@ -230,10 +297,12 @@ chrome.action.onClicked.addListener(async (tab) => {
       }
   
       // Erfolgs-Feedback
-      showBadge(tab.id, "✓", BADGE_COLORS.SUCCESS);
+      await showBadge(tab.id, "✓", BADGE_COLORS.SUCCESS);
   
     } catch (err) {
-      showBadge(tab.id, "✗", BADGE_COLORS.ERROR);
+      // Logge Fehler für Debugging
+      console.error('Add-on: Unerwarteter Fehler', err);
+      await showBadge(tab?.id, "✗", BADGE_COLORS.ERROR);
     }
   });
   
@@ -319,9 +388,26 @@ chrome.action.onClicked.addListener(async (tab) => {
         }
       }
 
-      // Prüfe spezielle Kombination: DE:239 und DE:1022-10 zusammen
+      // Prüfe spezielle Kombinationen: Hauptschild + Zusatzschild
+      // Dreierkombination zuerst prüfen (spezifischer)
+      if (foundSigns.has('DE:239') && foundSigns.has('DE:1022-10') && foundSigns.has('DE:1000-31')) {
+        return 'DE:239,1022-10,1000-31';
+      }
+      // Zweierkombinationen
       if (foundSigns.has('DE:239') && foundSigns.has('DE:1022-10')) {
         return 'DE:239,1022-10';
+      }
+      if (foundSigns.has('DE:237') && foundSigns.has('DE:1000-31')) {
+        return 'DE:237,1000-31';
+      }
+      if (foundSigns.has('DE:240') && foundSigns.has('DE:1000-31')) {
+        return 'DE:240,1000-31';
+      }
+      if (foundSigns.has('DE:241-30') && foundSigns.has('DE:1000-31')) {
+        return 'DE:241-30,1000-31';
+      }
+      if (foundSigns.has('DE:241-31') && foundSigns.has('DE:1000-31')) {
+        return 'DE:241-31,1000-31';
       }
 
       // Falls nur ein Verkehrszeichen gefunden wurde, gebe es zurück

@@ -5,6 +5,30 @@ Alle bemerkenswerten Änderungen an diesem Projekt werden in dieser Datei dokume
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3] - 2025-12-09
+
+### Hinzugefügt
+- Neues Verkehrszeichen: DE:1000-31 - Beide Richtungen (Complementary: Two way traffic)
+- Unterstützung für Kombinationen mit DE:1000-31:
+  - DE:237,1000-31 - Radweg mit beide Richtungen
+  - DE:240,1000-31 - Gemeinsamer Geh- und Radweg mit beide Richtungen
+  - DE:241-30,1000-31 - Getrennter Rad- und Gehweg (links) mit beide Richtungen
+  - DE:241-31,1000-31 - Getrennter Rad- und Gehweg (rechts) mit beide Richtungen
+  - DE:239,1022-10,1000-31 - Gehweg mit Radfahrer frei und beide Richtungen
+
+### Verbessert
+- Robustere Fehlerbehandlung: Alle Fehler werden jetzt geloggt für besseres Debugging
+- Verbesserte Tab-Validierung: Prüft ob Tab noch existiert bevor Operationen ausgeführt werden
+- Robustere Badge-Funktion: Fallback wenn Tab geschlossen wurde
+- Service Worker Initialisierung: Bessere Überwachung des Service Worker Status
+- Fehlerbehandlung für Script-Injection: Behandelt Fälle wenn Tab während Ausführung geschlossen wird
+
+### Technisch
+- Verbesserte Fehlerbehandlung in `showBadge()` Funktion
+- Async/await für alle Badge-Operationen
+- Console-Logging für alle Fehlerfälle
+- Event Listener für Service Worker Lifecycle (onInstalled, onStartup)
+
 ## [0.2] - 2025-12-09
 
 ### Geändert
