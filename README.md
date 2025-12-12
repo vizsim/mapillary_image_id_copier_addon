@@ -21,7 +21,13 @@ Die Erweiterung erkennt folgende deutsche Verkehrszeichen:
 | DE:241-31 | Getrennter Rad- und Gehweg (Radweg rechts) | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_31.3627eb18.svg" width="40"> | `regulatory--dual-path-pedestrians-and-bicycles--g1` |
 | DE:239 | Gehweg | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_239.d408d2f3.svg" width="40"> | `regulatory--pedestrians-only--g1` |
 | DE:1022-10 | Radfahrer frei | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1022_10.cda7bd53.svg" width="40"> | `complementary--except-bicycles--g1` |
+| DE:1000-31 | Beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `complementary--two-way-traffic--g3` |
 | DE:239,1022-10 | Gehweg mit Radfahrer frei | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_239.d408d2f3.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1022_10.cda7bd53.svg" width="40"> | `regulatory--pedestrians-only--g1`<br>`complementary--except-bicycles--g1` |
+| DE:237,1000-31 | Radweg mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_237.36e48b6d.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--bicycles-only--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:240,1000-31 | Gemeinsamer Geh- und Radweg mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_240.c2d222a0.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--shared-path-pedestrians-and-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:241-30,1000-31 | Getrennter Rad- und Gehweg (links) mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_30.69c98777.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--dual-path-bicycles-and-pedestrians--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:241-31,1000-31 | Getrennter Rad- und Gehweg (rechts) mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_31.3627eb18.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--dual-path-pedestrians-and-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:239,1022-10,1000-31 | Gehweg mit Radfahrer frei und beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_239.d408d2f3.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1022_10.cda7bd53.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--pedestrians-only--g1`<br>`complementary--except-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
 
 ## Installation
 
@@ -30,7 +36,7 @@ Die Erweiterung erkennt folgende deutsche Verkehrszeichen:
 Die einfachste Methode: Lade eine fertige Version herunter.
 
 1. Gehe zu den [Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/tree/main/releases)
-2. Lade die neueste Version als ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.2.zip`)
+2. Lade die neueste Version als ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.3.zip`)
 3. Entpacke die ZIP-Datei in einen Ordner
 4. Öffne Chrome und navigiere zu `chrome://extensions/`
 5. Aktiviere den **"Entwicklermodus"** (Schalter oben rechts)
