@@ -3,6 +3,10 @@
 *.pem
 #*.zip
 
+# Build (build-release.sh): temporärer Ordner und lokal gebaute ZIPs.
+# Veröffentlicht wird über GitHub Releases, die ZIPs bis v0.3 bleiben im Repo.
+release/
+releases/*.zip
 
 # OS Files
 .DS_Store
@@ -17,8 +21,3 @@ Thumbs.db
 
 # Logs
 *.log
-
-
-*.sh
-.github/
-RELEASE.md

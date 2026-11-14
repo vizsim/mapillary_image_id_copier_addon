@@ -1,0 +1,54 @@
+name: Release
+
+# Ein Versions-Tag wie "v0.4" erzeugt ein GitHub Release mit der ZIP-Datei der Erweiterung.
+# Die Release-Notes kommen aus dem passenden Abschnitt in CHANGELOG.md.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write # nötig, um das Release anzulegen
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Version prüfen (Tag muss zu manifest.json passen)
+        id: version
+        run: |
+          VERSION=$(grep '"version"' manifest.json | cut -d'"' -f4)
+          if [ "v${VERSION}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} passt nicht zur Version ${VERSION} in manifest.json"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Release-Notes aus CHANGELOG.md lesen
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          awk -v version="$VERSION" '
+            index($0, "## [" version "]") == 1 { found = 1; next }
+            found && index($0, "## [") == 1 { exit }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "::error::Kein Abschnitt [${VERSION}] in CHANGELOG.md"
+            exit 1
+          fi
+
+      - name: ZIP bauen
+        run: bash build-release.sh
+
+      - name: GitHub Release anlegen
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Version ${{ steps.version.outputs.version }}
+          body_path: release-notes.md
+          files: releases/mapillary_image_id_copier_addon-v${{ steps.version.outputs.version }}.zip
+          fail_on_unmatched_files: true
