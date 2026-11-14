@@ -21,13 +21,13 @@ traffic_sign:direction=forward
 
 Haupt- und Zusatzzeichen werden automatisch kombiniert, z. B. `traffic_sign=DE:239,1022-10`.
 
-**Wichtig:** Mapillary blendet nur Zeichen ein, die im Verkehrszeichen-Filter stehen, und nur die kann die Erweiterung erkennen. Fehlen Zeichen deiner Liste im Filter, ergänzt das Popup sie mit **Filter ergänzen** in der URL. Mit **Alle Zeichen einblenden** siehst du auch Zeichen, die du noch nicht zugeordnet hast.
+**Wichtig:** Mapillary blendet nur Zeichen ein, die im Verkehrszeichen-Filter stehen, und nur die kann die Erweiterung erkennen. Fehlen aktive Zeichen im Filter, ergänzt das Popup sie mit **Filter ergänzen** in der URL. Mit **Alle Zeichen einblenden** siehst du auch Zeichen, die du noch nicht zugeordnet hast.
 
 ## Verkehrszeichen
 
-In den Einstellungen lassen sich Pakete ein- und ausschalten, einzelne Zeichen abwählen und eigene Zuordnungen für alle rund 1.500 Verkehrszeichen-Klassen von Mapillary anlegen. Eigene Zuordnungen haben Vorrang.
+Alle Pakete sind standardmäßig aktiv. In den Einstellungen kannst du Pakete und einzelne Zeichen ausschalten: Das Popup erkennt sie dann weiterhin, übernimmt sie aber erst per Haken. Außerdem kannst du eigene Zuordnungen für alle rund 1.500 Verkehrszeichen-Klassen von Mapillary anlegen, die Vorrang vor den Paketen haben.
 
-### Radverkehr (standardmäßig aktiv)
+### Radverkehr
 
 | | Code | Bedeutung |
 | :-: | --- | --- |

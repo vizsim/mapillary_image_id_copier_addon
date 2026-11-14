@@ -3,13 +3,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import * as core from '../lib/core.js';
-import { buildActiveMapping } from '../lib/catalog.js';
+import { buildMapping, activeSignNames } from '../lib/catalog.js';
 import { DEFAULT_SETTINGS } from '../lib/settings.js';
 
 // Ausschnitt aus der echten mapillary_sprites.json (Stand November 2026)
 const sprites = JSON.parse(readFileSync(new URL('./fixtures/sprites.json', import.meta.url), 'utf8'));
 const { nameByPosition } = core.buildSpriteIndex(sprites);
-const defaultMapping = buildActiveMapping(DEFAULT_SETTINGS);
+const defaultMapping = buildMapping(DEFAULT_SETTINGS);
 
 /** clip-Wert, wie ihn der Mapillary-Viewer für ein Zeichen setzt */
 function clipFor(name, separator = ', ') {
@@ -81,10 +81,15 @@ test('Zeichen ohne Zuordnung landen in unmapped, Markierungen und POIs nicht', (
   assert.deepEqual(result.unmapped, ['regulatory--no-entry--g1']);
 });
 
+test('Erkennung kennt den ganzen Katalog, unabhängig von den Paket-Haken', () => {
+  const mapping = buildMapping({ ...DEFAULT_SETTINGS, enabledPackages: [] });
+  assert.equal(detect(['regulatory--no-heavy-goods-vehicles--g1'], mapping).trafficSign, 'DE:253');
+  assert.equal(detect(['information--pedestrians-crossing--g1'], mapping).trafficSign, 'DE:350');
+});
+
 test('road-closed-to-vehicles: nur --g3 ist DE:250, --g1 bleibt ohne Zuordnung', () => {
-  const mapping = buildActiveMapping({ ...DEFAULT_SETTINGS, enabledPackages: ['cycling', 'access'] });
-  assert.equal(detect(['regulatory--road-closed-to-vehicles--g3'], mapping).trafficSign, 'DE:250');
-  assert.deepEqual(detect(['regulatory--road-closed-to-vehicles--g1'], mapping).unmapped, ['regulatory--road-closed-to-vehicles--g1']);
+  assert.equal(detect(['regulatory--road-closed-to-vehicles--g3']).trafficSign, 'DE:250');
+  assert.deepEqual(detect(['regulatory--road-closed-to-vehicles--g1']).unmapped, ['regulatory--road-closed-to-vehicles--g1']);
 });
 
 test('clip-Werte ohne Treffer im Sprite-Index werden gemeldet', () => {
@@ -135,7 +140,7 @@ const FILTER_URL = 'https://www.mapillary.com/app/?lat=52.52&lng=13.405&z=17&sho
   + '&trafficSign%5B%5D=complementary--bike-route--g1'
   + '&mapFeature%5B%5D=marking--discrete--symbol--bicycle&dateFrom=2025-08-01&focus=photo'
   + '&pKey=261103190300401&x=0.5&y=0.35&zoom=0.1';
-const cyclingNames = defaultMapping.map((entry) => entry.mapillary);
+const cyclingNames = activeSignNames({ ...DEFAULT_SETTINGS, enabledPackages: ['cycling'] });
 
 /** alle Parameter außer dem Verkehrszeichen-Filter */
 function otherParams(url) {

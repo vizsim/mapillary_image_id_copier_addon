@@ -7,7 +7,7 @@ import {
   buildClipboardText, normalizeSignCode, trafficSignToolUrl, isSupplementary, shownTrafficSigns,
   missingTrafficSigns, withTrafficSigns, withOnlyTrafficSigns, withAllTrafficSigns, collectSignClips
 } from './lib/core.js';
-import { buildActiveMapping } from './lib/catalog.js';
+import { buildMapping, activeSignNames } from './lib/catalog.js';
 import { loadSettings, saveSettings } from './lib/settings.js';
 import { el, signIcon } from './lib/dom.js';
 
@@ -17,7 +17,7 @@ const STATUS_ICONS = { success: '✓', warning: '?', error: '!' };
 const state = {
   tab: null,
   settings: null,
-  mapping: [], // aktive Zuordnungen (Pakete + eigene)
+  mapping: [], // Zuordnungen für die Erkennung (ganzer Katalog + eigene)
   imageId: null,
   sprites: {}, // Sprite-JSON, für die Icons
   names: [], // erkannte Mapillary-Namen
@@ -42,7 +42,7 @@ async function init() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   state.tab = tab;
   state.settings = await loadSettings();
-  state.mapping = buildActiveMapping(state.settings);
+  state.mapping = buildMapping(state.settings);
 
   if (!tab?.url || !isMapillaryUrl(tab.url)) {
     showStatus('error', 'Keine Mapillary-Seite', 'Öffne ein Bild auf mapillary.com und klicke dann auf das Icon.');
@@ -57,6 +57,13 @@ async function init() {
   }
 
   await detect();
+  // Ausgeschaltete Zeichen erkennen, aber erst per Haken übernehmen
+  const active = new Set(activeNames());
+  for (const entry of matchSigns(state.names, state.mapping).matched) {
+    if (!active.has(entry.mapillary)) {
+      state.deselected.add(entry.mapillary);
+    }
+  }
   renderDirection();
   renderSigns();
   renderFilter();
@@ -94,8 +101,9 @@ async function detect() {
   }
 }
 
+/** Aktive Zeichen: automatisch ausgewählt und Teil des Mapillary-Filters */
 function activeNames() {
-  return state.mapping.map((entry) => entry.mapillary);
+  return activeSignNames(state.settings);
 }
 
 function selectedEntries() {
@@ -147,7 +155,7 @@ function noSignReason() {
   }
   const { matched, unmapped } = matchSigns(state.names, state.mapping);
   if (matched.length > 0) {
-    return 'Alle erkannten Zeichen sind abgewählt.';
+    return 'Die erkannten Zeichen sind abgewählt oder in den Einstellungen ausgeschaltet.';
   }
   if (unmapped.length > 0) {
     return 'Die erkannten Zeichen sind noch keinem OSM-Code zugeordnet.';
@@ -179,13 +187,14 @@ async function changeDirection(radio) {
 
 function renderSigns() {
   const { matched, unmapped } = matchSigns(state.names, state.mapping);
+  const active = new Set(activeNames());
   $('detected').hidden = matched.length === 0;
-  $('detected-list').replaceChildren(...matched.map(detectedItem));
+  $('detected-list').replaceChildren(...matched.map((entry) => detectedItem(entry, active.has(entry.mapillary))));
   $('unmapped').hidden = unmapped.length === 0;
   $('unmapped-list').replaceChildren(...unmapped.map(unmappedItem));
 }
 
-function detectedItem(entry) {
+function detectedItem(entry, isActive) {
   return el('li', {},
     el('label', { class: 'sign' },
       el('input', {
@@ -194,7 +203,11 @@ function detectedItem(entry) {
         onchange: (event) => toggleSign(entry.mapillary, event.target.checked)
       }),
       signIcon(entry.mapillary, state.sprites),
-      el('span', { class: 'sign-text' }, el('strong', {}, entry.code), entry.name ? ` ${entry.name}` : '')
+      el('span', { class: 'sign-text' },
+        el('strong', {}, entry.code),
+        entry.name ? ` ${entry.name}` : '',
+        !isActive && el('span', { class: 'note' }, 'In den Einstellungen ausgeschaltet')
+      )
     )
   );
 }
@@ -241,14 +254,14 @@ async function assignCode(event, name, input) {
   const customSigns = [...state.settings.customSigns.filter((custom) => custom.mapillary !== name), { mapillary: name, code }];
   await saveSettings({ customSigns });
   state.settings = { ...state.settings, customSigns };
-  state.mapping = buildActiveMapping(state.settings);
+  state.mapping = buildMapping(state.settings);
   renderSigns();
   renderFilter();
   await copyToClipboard();
 }
 
 /**
- * Hinweis auf Zeichen, die Mapillary nicht einblendet, und Umschalter alle/nur meine Zeichen
+ * Hinweis auf aktive Zeichen, die Mapillary nicht einblendet, und Umschalter alle/nur aktive Zeichen
  */
 function renderFilter() {
   const url = state.tab.url;
@@ -258,12 +271,12 @@ function renderFilter() {
 
   $('filter').hidden = missing.length === 0;
   $('filter-text').textContent = missing.length === 1
-    ? '1 Zeichen aus deiner Liste ist in Mapillary nicht eingeblendet.'
-    : `${missing.length} Zeichen aus deiner Liste sind in Mapillary nicht eingeblendet.`;
+    ? '1 aktives Zeichen ist in Mapillary nicht eingeblendet.'
+    : `${missing.length} aktive Zeichen sind in Mapillary nicht eingeblendet.`;
 
   const toggle = $('filter-toggle');
   toggle.hidden = false;
-  toggle.textContent = shown.all ? 'Nur meine Zeichen einblenden' : 'Alle Zeichen einblenden';
+  toggle.textContent = shown.all ? 'Nur aktive Zeichen einblenden' : 'Alle Zeichen einblenden';
   toggle.onclick = () => navigate(shown.all ? withOnlyTrafficSigns(url, names) : withAllTrafficSigns(url));
 }
 
