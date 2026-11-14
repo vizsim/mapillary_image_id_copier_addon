@@ -157,6 +157,11 @@ test('Filter: eingeblendete und fehlende Zeichen', () => {
     'complementary--two-way-traffic--g3'
   ]);
   assert.deepEqual(core.missingTrafficSigns('https://www.mapillary.com/app/?trafficSign=all&pKey=1', cyclingNames), []);
+  // So schreibt Mapillary selbst "alle Zeichen" in die URL
+  const mapillaryAll = core.shownTrafficSigns('https://www.mapillary.com/app/?pKey=1&trafficSign%5B%5D=all&x=0.5');
+  assert.equal(mapillaryAll.all, true);
+  assert.equal(mapillaryAll.names.size, 0);
+  assert.deepEqual(core.missingTrafficSigns('https://www.mapillary.com/app/?pKey=1&trafficSign%5B%5D=all', cyclingNames), []);
   assert.deepEqual(core.missingTrafficSigns('https://www.mapillary.com/app/?pKey=1', ['a', 'b', 'a']), ['a', 'b']);
 });
 
@@ -173,9 +178,11 @@ test('Filter ergänzen: hängt fehlende Zeichen an, alles andere bleibt', () => 
 
 test('Filter: alle einblenden und nur meine Zeichen', () => {
   const all = core.withAllTrafficSigns(FILTER_URL);
-  assert.equal(new URL(all).searchParams.get('trafficSign'), 'all');
-  assert.deepEqual(new URL(all).searchParams.getAll('trafficSign[]'), []);
+  assert.deepEqual(new URL(all).searchParams.getAll('trafficSign[]'), ['all']);
+  assert.equal(new URL(all).searchParams.get('trafficSign'), null);
+  assert.match(all, /trafficSign%5B%5D=all/);
   assert.deepEqual(otherParams(all), otherParams(FILTER_URL));
+  assert.equal(core.shownTrafficSigns(all).all, true);
 
   const only = core.withOnlyTrafficSigns(all, cyclingNames);
   assert.equal(new URL(only).searchParams.get('trafficSign'), null);

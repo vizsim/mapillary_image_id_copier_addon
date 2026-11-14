@@ -52,6 +52,8 @@
     button.primary { border-color: var(--accent); background: var(--accent); color: #fff; }
     button.link { padding: 0; border: none; background: none; color: var(--accent); }
     button.link:hover { text-decoration: underline; }
+    button.icon { font-size: 17px; line-height: 1; }
+    button.icon:hover { text-decoration: none; opacity: .75; }
     footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); }
     footer .spacer { flex: 1; }
   </style>
@@ -86,7 +88,7 @@
     <button id="open-tool" type="button" hidden>Traffic Sign Tool ↗</button>
     <span class="spacer"></span>
     <button id="filter-toggle" type="button" class="link" hidden></button>
-    <button id="open-options" type="button" class="link">Einstellungen</button>
+    <button id="open-options" type="button" class="link icon" title="Einstellungen" aria-label="Einstellungen">⚙</button>
   </footer>
 </body>
 </html>

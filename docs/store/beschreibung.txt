@@ -1,0 +1,26 @@
+Kopiert die Bild-ID und die erkannten Verkehrszeichen des aktuellen Mapillary-Bildes mit einem Klick als fertige OSM-Tags. Gedacht für OSM-Mapper*innen, die Radwege, Gehwege und andere Verkehrsinfrastruktur anhand von Mapillary-Bildern erfassen.
+
+SO FUNKTIONIERT'S
+1. Auf mapillary.com ein Bild öffnen.
+2. Auf das Icon klicken. Das Popup kopiert sofort, zum Beispiel:
+   mapillary=261103190300401
+   traffic_sign=DE:240,1000-31
+   traffic_sign:direction=forward
+3. Im Popup siehst du, was erkannt wurde. Du kannst die Richtung umschalten, einzelne Zeichen abwählen und unbekannte Zeichen direkt einem OSM-Code zuordnen.
+4. Auf Wunsch öffnet sich das OSM Traffic Sign Tool (trafficsigns.osm-verkehrswende.org) mit der erkannten Kombination.
+
+VERKEHRSZEICHEN
+Die Zeichen sind in Paketen organisiert, die standardmäßig alle aktiv sind:
+• Radverkehr: DE:237, 239, 240, 241-30, 241-31, 244.2 und die Zusatzzeichen 1022-10, 1000-31, 1000-33
+• Zufahrtsverbote: DE:250, 251, 253, 254, 255, 259, 260
+• Weitere: DE:350 (Fußgängerüberweg), DE:274-30 (Tempo 30)
+Ausgeschaltete Pakete erkennt das Popup weiterhin, übernimmt sie aber erst per Haken. Außerdem kannst du jedes der rund 1.500 Verkehrszeichen von Mapillary selbst einem OSM-Code zuordnen. Haupt- und Zusatzzeichen werden automatisch kombiniert.
+
+MAPILLARY-FILTER
+Mapillary blendet nur Zeichen ein, die im Verkehrszeichen-Filter stehen. Das Popup zeigt, welche aktiven Zeichen fehlen, und ergänzt sie mit einem Klick in der URL.
+
+DATENSCHUTZ
+Die Erweiterung liest die Mapillary-Seite nur, wenn du auf das Icon klickst. Dazu lädt sie die öffentlichen Sprite-Dateien von Mapillary (Zeichen-Index und Icons). Sie sammelt keine Daten und sendet nichts an Dritte.
+
+Open Source (MIT-Lizenz): https://github.com/vizsim/mapillary_image_id_copier_addon
+Fehler und Wünsche gerne als Issue auf GitHub.

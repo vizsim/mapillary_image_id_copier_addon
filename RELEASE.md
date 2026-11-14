@@ -44,4 +44,4 @@ Inhalt des ZIPs: `manifest.json`, `popup.html`, `popup.js`, `options.html`, `opt
 
 ## Chrome Web Store
 
-Neue Versionen lädst du von Hand im [Developer Dashboard](https://chrome.google.com/webstore/devconsole) hoch: unter *Paket* das ZIP aus dem GitHub-Release hochladen und zur Überprüfung einreichen. Die Kurzbeschreibung im Store kommt aus `description` in `manifest.json`.
+Neue Versionen lädst du von Hand im [Developer Dashboard](https://chrome.google.com/webstore/devconsole) hoch: unter *Paket* das ZIP aus dem GitHub-Release hochladen und zur Überprüfung einreichen. Die Kurzbeschreibung im Store kommt aus `description` in `manifest.json`. Beschreibung und Screenshots (1280×800) für den Store-Eintrag liegen in `docs/store/`.

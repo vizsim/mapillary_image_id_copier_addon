@@ -5,6 +5,15 @@ Alle bemerkenswerten Änderungen an diesem Projekt werden in dieser Datei dokume
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.5.2] - 2026-11-14
+
+### Behoben
+- Blendete Mapillary schon alle Verkehrszeichen ein (`trafficSign[]=all` in der URL), meldete das Popup trotzdem fehlende Zeichen im Filter. „Alle Zeichen einblenden“ schreibt jetzt dasselbe Format wie Mapillary.
+- Die Fußzeile im Popup bricht nicht mehr um. Die Einstellungen öffnet jetzt ein Zahnrad.
+
+### Geändert
+- README mit Screenshot. Beschreibung und Screenshots für den Chrome Web Store liegen jetzt in `docs/store/`.
+
 ## [0.5.1] - 2026-11-14
 
 ### Geändert

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Mapillary Traffic Sign & Image ID Copier",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Kopiert Mapillary-Bild-ID und erkannte Verkehrszeichen mit einem Klick als OSM-Tags und öffnet das Traffic Sign Tool.",
   "permissions": [
     "scripting",

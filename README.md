@@ -2,6 +2,10 @@
 
 Chrome-Erweiterung für OSM-Mapper\*innen: Ein Klick kopiert die Bild-ID und die erkannten Verkehrszeichen des aktuellen Mapillary-Bildes als fertige OSM-Tags.
 
+![Popup der Erweiterung über einem Mapillary-Bild: Zeichen DE:240 erkannt und als OSM-Tags kopiert](docs/screenshot.jpg)
+
+Bild: Mapillary, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
 ```text
 mapillary=261103190300401
 traffic_sign=DE:240,1000-31
