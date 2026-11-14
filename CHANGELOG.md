@@ -5,6 +5,26 @@ Alle bemerkenswerten Änderungen an diesem Projekt werden in dieser Datei dokume
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.5] - 2026-11-14
+
+### Hinzugefügt
+- Popup statt Badge: Ein Klick kopiert wie bisher sofort, und das Popup zeigt, was erkannt und kopiert wurde. Dort lassen sich die Richtung umschalten, einzelne Zeichen abwählen und Zeichen ohne Zuordnung direkt einem OSM-Code zuordnen.
+- Zeichen-Pakete, in den Einstellungen ein- und ausschaltbar:
+  - Radverkehr (standardmäßig aktiv), neu mit DE:244.2 (Ende Fahrradstraße) und DE:1000-33 (Radverkehr im Gegenverkehr)
+  - Zufahrtsverbote: DE:250, 251, 253, 254, 255, 259, 260
+  - Weitere: DE:350 (Fußgängerüberweg), DE:274-30 (Tempo 30)
+- Eigene Zuordnungen von Mapillary-Zeichen zu OSM-Codes, mit Suche über alle Mapillary-Verkehrszeichen. Sie haben Vorrang vor den Paketen.
+- Mapillary-Filter: Das Popup zeigt, welche Zeichen deiner Liste Mapillary nicht einblendet, und ergänzt sie auf Wunsch in der URL. Dazu „Alle Zeichen einblenden“ und „Nur meine Zeichen einblenden“.
+- Hinweis, wenn nur Zusatzzeichen erkannt wurden und das Hauptzeichen fehlt.
+
+### Geändert
+- README gekürzt und an die Pakete angepasst.
+- Kurzbeschreibung der Erweiterung überarbeitet.
+
+### Technisch
+- Der Service Worker entfällt. Die Logik steckt in ES-Modulen unter `lib/`, die Popup und Einstellungsseite gemeinsam nutzen.
+- Tests mit `node --test`. Sie laufen auch im Release-Workflow vor dem Bauen des ZIPs.
+
 ## [0.4] - 2026-11-14
 
 ### Behoben

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapillary Traffic Sign Copier</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff; --fg: #1f2328; --muted: #656d76; --border: #d0d7de; --panel: #f6f8fa; --accent: #0969da;
+      --success: #1a7f37; --success-bg: #dafbe1; --warning: #9a6700; --warning-bg: #fff8c5; --error: #cf222e; --error-bg: #ffebe9;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117; --fg: #e6edf3; --muted: #8d96a0; --border: #30363d; --panel: #161b22; --accent: #4493f8;
+        --success: #3fb950; --success-bg: #12261e; --warning: #d29922; --warning-bg: #272115; --error: #f85149; --error-bg: #301717;
+      }
+    }
+    [hidden] { display: none !important; }
+    body {
+      width: 360px; margin: 0; padding: 12px;
+      font: 13px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg); color: var(--fg);
+    }
+    h2 { margin: 14px 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+    .status { padding: 8px 10px; border-radius: 6px; background: var(--panel); }
+    .status strong { display: block; }
+    .status p { margin: 2px 0 0; color: var(--fg); opacity: .8; }
+    .status.success { background: var(--success-bg); } .status.success strong { color: var(--success); }
+    .status.warning { background: var(--warning-bg); } .status.warning strong { color: var(--warning); }
+    .status.error { background: var(--error-bg); } .status.error strong { color: var(--error); }
+    .copied {
+      margin: 8px 0 0; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel);
+      font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; word-break: break-all;
+    }
+    .direction { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+    .direction label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .muted { color: var(--muted); }
+    .signs { margin: 0; padding: 0; list-style: none; }
+    .signs li + li { border-top: 1px solid var(--border); }
+    .sign { display: flex; align-items: center; gap: 8px; padding: 5px 0; margin: 0; }
+    label.sign { cursor: pointer; }
+    .sign-icon { flex: none; display: inline-block; width: 24px; height: 24px; border-radius: 3px; background-color: var(--panel); }
+    .sign-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    code.sign-text { font-size: 11px; }
+    .sign input[type="text"] { width: 72px; }
+    .hint { margin-top: 12px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; }
+    .hint p { margin: 0 0 6px; }
+    input[type="text"] { font: inherit; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); }
+    button { font: inherit; padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--fg); cursor: pointer; }
+    button:hover { border-color: var(--accent); }
+    button.primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+    button.link { padding: 0; border: none; background: none; color: var(--accent); }
+    button.link:hover { text-decoration: underline; }
+    footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); }
+    footer .spacer { flex: 1; }
+  </style>
+  <script type="module" src="popup.js"></script>
+</head>
+<body>
+  <div id="status" class="status" role="status"><strong>Erkenne Verkehrszeichen …</strong></div>
+  <pre id="copied" class="copied" hidden></pre>
+
+  <div id="direction" class="direction" hidden>
+    <span class="muted">Richtung</span>
+    <label><input type="radio" name="direction" value="forward" id="direction-forward"> forward</label>
+    <label><input type="radio" name="direction" value="backward" id="direction-backward"> backward</label>
+  </div>
+
+  <section id="detected" hidden>
+    <h2>Erkannt</h2>
+    <ul id="detected-list" class="signs"></ul>
+  </section>
+
+  <section id="unmapped" hidden>
+    <h2>Ohne Zuordnung</h2>
+    <ul id="unmapped-list" class="signs"></ul>
+  </section>
+
+  <div id="filter" class="hint" hidden>
+    <p id="filter-text"></p>
+    <button id="filter-add" type="button" class="primary">Filter ergänzen</button>
+  </div>
+
+  <footer>
+    <button id="open-tool" type="button" hidden>Traffic Sign Tool ↗</button>
+    <span class="spacer"></span>
+    <button id="filter-toggle" type="button" class="link" hidden></button>
+    <button id="open-options" type="button" class="link">Einstellungen</button>
+  </footer>
+</body>
+</html>

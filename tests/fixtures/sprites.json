@@ -1,0 +1,163 @@
+{
+ "regulatory--shared-path-pedestrians-and-bicycles--g1": {
+  "x": 480,
+  "y": 480,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--bicycles-only--g1": {
+  "x": 696,
+  "y": 408,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--dual-path-bicycles-and-pedestrians--g1": {
+  "x": 1360,
+  "y": 96,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--dual-path-pedestrians-and-bicycles--g1": {
+  "x": 638,
+  "y": 980,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--pedestrians-only--g1": {
+  "x": 912,
+  "y": 0,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--end-of-bicycles-only--g2": {
+  "x": 217,
+  "y": 955,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "complementary--except-bicycles--g1": {
+  "x": 1480,
+  "y": 48,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "complementary--two-way-traffic--g3": {
+  "x": 624,
+  "y": 240,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "complementary--bike-route--g1": {
+  "x": 762,
+  "y": 432,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--road-closed-to-vehicles--g3": {
+  "x": 576,
+  "y": 0,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-motor-vehicles-except-motorcycles--g1": {
+  "x": 421,
+  "y": 529,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-heavy-goods-vehicles--g1": {
+  "x": 1354,
+  "y": 120,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-bicycles--g1": {
+  "x": 1708,
+  "y": 96,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-motorcycles--g1": {
+  "x": 930,
+  "y": 432,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-pedestrians--g1": {
+  "x": 1378,
+  "y": 24,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-motor-vehicles--g1": {
+  "x": 1786,
+  "y": 120,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "information--pedestrians-crossing--g1": {
+  "x": 804,
+  "y": 907,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--maximum-speed-limit-30--g1": {
+  "x": 710,
+  "y": 456,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--no-entry--g1": {
+  "x": 1502,
+  "y": 72,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--road-closed-to-vehicles--g1": {
+  "x": 600,
+  "y": 0,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "regulatory--go-straight-or-turn-right--g1": {
+  "x": 1882,
+  "y": 24,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "marking--discrete--arrow--left": {
+  "x": 948,
+  "y": 883,
+  "width": 24,
+  "height": 24,
+  "pixelRatio": 1
+ },
+ "airport": {
+  "x": 939,
+  "y": 745,
+  "width": 23,
+  "height": 23,
+  "pixelRatio": 1
+ }
+}

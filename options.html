@@ -5,113 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapillary Traffic Sign Copier - Einstellungen</title>
   <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff; --fg: #333333; --muted: #666666; --panel: #f5f5f5; --border: #dddddd; --accent: #4a90e2;
+      --ok-bg: #d4edda; --ok-fg: #155724; --error: #c62828;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #16181d; --fg: #e6e6e6; --muted: #a0a4ab; --panel: #22252b; --border: #3a3e46; --accent: #6aa8f0;
+        --ok-bg: #1d3b26; --ok-fg: #a5e3b5; --error: #ff8a80;
+      }
+    }
+    [hidden] { display: none !important; }
     body {
+      max-width: 720px; margin: 40px auto; padding: 0 20px 60px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      line-height: 1.6;
+      line-height: 1.6; background: var(--bg); color: var(--fg);
     }
-    h1 {
-      color: #333;
-      border-bottom: 2px solid #4A90E2;
-      padding-bottom: 10px;
+    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+    h2 { margin-top: 40px; }
+    h3 { margin: 0 0 8px; }
+    h4 { margin: 18px 0 6px; }
+    .option { margin: 20px 0; padding: 15px; border-radius: 8px; background: var(--panel); }
+    label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 16px; }
+    .option > label + label { margin-top: 6px; }
+    input[type="checkbox"], input[type="radio"] { width: 18px; height: 18px; margin: 0; cursor: pointer; }
+    .radio-group { margin: 8px 0 0 28px; }
+    .description, .muted { color: var(--muted); font-size: 14px; }
+    .description { margin-top: 8px; }
+    .error { color: var(--error); }
+    input[type="text"], input[type="search"] {
+      font: inherit; font-size: 14px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg); color: var(--fg);
     }
-    .option {
-      margin: 20px 0;
-      padding: 15px;
-      background: #f5f5f5;
-      border-radius: 8px;
+    input[type="search"] { width: 100%; box-sizing: border-box; }
+    button {
+      font: inherit; font-size: 14px; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg); color: var(--fg); cursor: pointer;
     }
-    label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    .description {
-      margin-top: 8px;
-      color: #666;
-      font-size: 14px;
-    }
-    input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
-      cursor: pointer;
-    }
-    .radio-group {
-      margin-top: 10px;
-    }
-    .radio-group label {
-      margin-bottom: 8px;
-    }
+    button:hover { border-color: var(--accent); }
+    .package-header { font-size: 17px; }
+    .package.off .signs { opacity: .5; }
+    .signs { margin: 8px 0 0; padding: 0; list-style: none; }
+    .signs li { padding: 4px 0; border-top: 1px solid var(--border); font-size: 14px; }
+    .sign { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .sign-icon { flex: none; display: inline-block; width: 24px; height: 24px; border-radius: 3px; background-color: var(--bg); }
+    .code { min-width: 82px; }
+    .mapillary-name { display: block; margin-left: 62px; font-size: 11px; color: var(--muted); }
+    li.sign .mapillary-name { flex: 1; margin-left: 0; }
+    .badge { padding: 0 6px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 12px; }
+    .results li { border-top: none; padding: 0; }
+    .result { display: flex; align-items: center; gap: 10px; width: 100%; padding: 3px 6px; border: none; background: none; text-align: left; }
+    .result:hover { background: var(--bg); }
+    .add-form { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 10px; border: 1px solid var(--accent); border-radius: 6px; }
+    .add-form .sign { flex: 1; min-width: 0; overflow-wrap: anywhere; }
     .status {
-      margin-top: 15px;
-      padding: 10px;
-      background: #d4edda;
-      color: #155724;
-      border-radius: 4px;
-      display: none;
+      position: fixed; right: 20px; bottom: 20px; padding: 10px 14px; border-radius: 4px;
+      background: var(--ok-bg); color: var(--ok-fg); display: none;
     }
-    .status.show {
-      display: block;
-    }
+    .status.show { display: block; }
   </style>
+  <script type="module" src="options.js"></script>
 </head>
 <body>
   <h1>⚙️ Einstellungen</h1>
-  
+
   <div class="option">
     <label>
       <input type="checkbox" id="autoOpenTab">
       <span>Traffic Sign Tool automatisch öffnen</span>
     </label>
     <div class="description">
-      Wenn aktiviert, wird das OSM Traffic Sign Tool automatisch in einem neuen Tab geöffnet, 
-      wenn ein Verkehrszeichen erkannt wurde.
+      Öffnet das OSM Traffic Sign Tool im Hintergrund, sobald ein Verkehrszeichen erkannt wurde.
+      Im Popup gibt es dafür außerdem einen Button.
     </div>
   </div>
 
   <div class="option">
-    <h3 style="margin-top: 0;">Kopiertes Format</h3>
-    <label>
-      <input type="checkbox" id="includeMapillary">
-      <span>mapillary={id} einbeziehen</span>
-    </label>
-    <div class="description" style="margin-top: 10px;">
-      <label>
-        <input type="checkbox" id="includeTrafficSign">
-        <span>traffic_sign={code} einbeziehen</span>
-      </label>
-    </div>
-    <div class="description" style="margin-top: 10px;">
-      <label>
-        <input type="checkbox" id="includeDirection">
-        <span>traffic_sign:direction einbeziehen</span>
-      </label>
-    </div>
-    <div class="radio-group" id="directionGroup" style="margin-top: 10px; margin-left: 30px;">
-      <label>
-        <input type="radio" name="direction" value="forward" id="directionForward">
-        <span>forward (vorwärts)</span>
-      </label>
-      <label>
-        <input type="radio" name="direction" value="backward" id="directionBackward">
-        <span>backward (rückwärts)</span>
-      </label>
+    <h3>Kopiertes Format</h3>
+    <label><input type="checkbox" id="includeMapillary"><span>mapillary={id}</span></label>
+    <label><input type="checkbox" id="includeTrafficSign"><span>traffic_sign={code}</span></label>
+    <label><input type="checkbox" id="includeDirection"><span>traffic_sign:direction</span></label>
+    <div class="radio-group" id="directionGroup">
+      <label><input type="radio" name="direction" value="forward" id="directionForward"><span>forward (vorwärts)</span></label>
+      <label><input type="radio" name="direction" value="backward" id="directionBackward"><span>backward (rückwärts)</span></label>
+      <div class="description">Lässt sich auch direkt im Popup umschalten.</div>
     </div>
   </div>
 
-  <div class="status" id="status">Einstellungen gespeichert!</div>
+  <h2>🚦 Verkehrszeichen</h2>
+  <p class="description">
+    Erkannt werden die Zeichen aktiver Pakete und deine eigenen Zuordnungen, aber nur, wenn Mapillary sie
+    einblendet. Fehlende Zeichen übernimmt das Popup mit „Filter ergänzen“ in die Mapillary-URL.
+  </p>
+  <p id="sprite-error" class="error" hidden>
+    Die Zeichen-Daten von Mapillary konnten nicht geladen werden. Icons und Suche fehlen deshalb.
+  </p>
 
-  <script src="options.js"></script>
+  <div id="packages"></div>
+
+  <div class="option">
+    <h3>Eigene Zuordnungen</h3>
+    <div class="description">
+      Haben Vorrang vor den Paketen. Unbekannte Zeichen kannst du auch direkt im Popup zuordnen.
+    </div>
+    <ul id="custom-list" class="signs"></ul>
+
+    <h4>Zeichen hinzufügen</h4>
+    <input id="search" type="search" placeholder="Zeichen-Daten werden geladen …" disabled autocomplete="off"
+      aria-label="Mapillary-Zeichen suchen">
+    <ul id="results" class="signs results"></ul>
+    <p id="results-more" class="description" hidden></p>
+    <form id="add-form" class="add-form" hidden>
+      <span id="add-preview" class="sign"></span>
+      <input id="add-code" type="text" placeholder="DE:…" size="10" required aria-label="OSM-Code">
+      <button type="submit">Hinzufügen</button>
+    </form>
+  </div>
+
+  <div class="status" id="status" role="status">Einstellungen gespeichert!</div>
 </body>
 </html>
-

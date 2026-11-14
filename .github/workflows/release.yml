@@ -28,6 +28,14 @@ jobs:
           fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tests
+        run: node --test
+
       - name: Release-Notes aus CHANGELOG.md lesen
         env:
           VERSION: ${{ steps.version.outputs.version }}

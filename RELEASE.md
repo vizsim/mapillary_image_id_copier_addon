@@ -6,7 +6,7 @@ Releases entstehen automatisch über GitHub Actions, sobald ein Versions-Tag (`v
 
 1. **Version anheben** in `manifest.json`, z. B. `"version": "0.5"`.
 2. **CHANGELOG.md ergänzen**: neuer Abschnitt `## [0.5] - JJJJ-MM-TT`. Dieser Abschnitt wird zu den Release-Notes.
-3. **Lokal testen**: In `chrome://extensions/` den Projektordner als entpackte Erweiterung laden und durchklicken (Details zur Erkennung in der Konsole des Service Workers, siehe README → „Fehlersuche“).
+3. **Lokal testen**: `node --test` ausführen (Node 22), dann in `chrome://extensions/` den Projektordner als entpackte Erweiterung laden und durchklicken. Zur Fehlersuche im Popup rechtsklicken und „Untersuchen“ wählen.
 4. **Committen und pushen**:
 
    ```bash
@@ -21,7 +21,7 @@ Releases entstehen automatisch über GitHub Actions, sobald ein Versions-Tag (`v
    git push origin v0.5
    ```
 
-Der Workflow [`.github/workflows/release.yml`](.github/workflows/release.yml) prüft dann, ob der Tag zur Version in `manifest.json` passt, liest die Release-Notes aus `CHANGELOG.md`, baut das ZIP mit `build-release.sh` und legt das Release unter [GitHub Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/releases) an.
+Der Workflow [`.github/workflows/release.yml`](.github/workflows/release.yml) prüft dann, ob der Tag zur Version in `manifest.json` passt, und führt die Tests aus. Danach liest er die Release-Notes aus `CHANGELOG.md`, baut das ZIP mit `build-release.sh` und legt das Release unter [GitHub Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/releases) an.
 
 ## Wenn der Workflow fehlschlägt
 
@@ -40,4 +40,8 @@ git push origin :refs/tags/v0.5
 
 Das ZIP landet in `releases/` und wird von Git ignoriert. Die ZIPs bis v0.3 liegen noch im Repository, neuere gibt es nur unter GitHub Releases.
 
-Inhalt des ZIPs: `manifest.json`, `service-worker.js`, `options.html`, `options.js`, `logo.png`, `LICENSE`, `README.md`.
+Inhalt des ZIPs: `manifest.json`, `popup.html`, `popup.js`, `options.html`, `options.js`, `lib/`, `logo.png`, `LICENSE`, `README.md`.
+
+## Chrome Web Store
+
+Neue Versionen lädst du von Hand im [Developer Dashboard](https://chrome.google.com/webstore/devconsole) hoch: unter *Paket* das ZIP aus dem GitHub-Release hochladen und zur Überprüfung einreichen. Die Kurzbeschreibung im Store kommt aus `description` in `manifest.json`.

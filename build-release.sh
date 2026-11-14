@@ -32,13 +32,8 @@ mkdir -p "${RELEASE_DIR}"
 
 # Dateien kopieren (nur die, die für die Extension benötigt werden)
 echo "Copying files..."
-cp manifest.json "${RELEASE_DIR}/"
-cp service-worker.js "${RELEASE_DIR}/"
-cp options.html "${RELEASE_DIR}/"
-cp options.js "${RELEASE_DIR}/"
-cp logo.png "${RELEASE_DIR}/"
-cp LICENSE "${RELEASE_DIR}/"
-cp README.md "${RELEASE_DIR}/"
+FILES=(manifest.json popup.html popup.js options.html options.js lib logo.png LICENSE README.md)
+cp -r "${FILES[@]}" "${RELEASE_DIR}/"
 
 # ZIP erstellen
 echo "Creating ZIP archive..."
