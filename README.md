@@ -15,19 +15,21 @@ Die Erweiterung erkennt folgende deutsche Verkehrszeichen:
 
 | VZ-Code | Beschreibung | Verkehrszeichen | Mapillary Wording |
 |---------|-------------|:---------------:|------------------|
-| DE:237 | Radweg | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_237.36e48b6d.svg" width="40"> | `regulatory--bicycles-only--g1` |
-| DE:240 | Gemeinsamer Geh- und Radweg | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_240.c2d222a0.svg" width="40"> | `regulatory--shared-path-pedestrians-and-bicycles--g1` |
-| DE:241-30 | Getrennter Rad- und Gehweg (Radweg links) | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_30.69c98777.svg" width="40"> | `regulatory--dual-path-bicycles-and-pedestrians--g1` |
-| DE:241-31 | Getrennter Rad- und Gehweg (Radweg rechts) | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_31.3627eb18.svg" width="40"> | `regulatory--dual-path-pedestrians-and-bicycles--g1` |
-| DE:239 | Gehweg | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_239.d408d2f3.svg" width="40"> | `regulatory--pedestrians-only--g1` |
-| DE:1022-10 | Radfahrer frei | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1022_10.cda7bd53.svg" width="40"> | `complementary--except-bicycles--g1` |
-| DE:1000-31 | Beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `complementary--two-way-traffic--g3` |
-| DE:239,1022-10 | Gehweg mit Radfahrer frei | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_239.d408d2f3.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1022_10.cda7bd53.svg" width="40"> | `regulatory--pedestrians-only--g1`<br>`complementary--except-bicycles--g1` |
-| DE:237,1000-31 | Radweg mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_237.36e48b6d.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--bicycles-only--g1`<br>`complementary--two-way-traffic--g3` |
-| DE:240,1000-31 | Gemeinsamer Geh- und Radweg mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_240.c2d222a0.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--shared-path-pedestrians-and-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
-| DE:241-30,1000-31 | Getrennter Rad- und Gehweg (links) mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_30.69c98777.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--dual-path-bicycles-and-pedestrians--g1`<br>`complementary--two-way-traffic--g3` |
-| DE:241-31,1000-31 | Getrennter Rad- und Gehweg (rechts) mit beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_241_31.3627eb18.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--dual-path-pedestrians-and-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
-| DE:239,1022-10,1000-31 | Gehweg mit Radfahrer frei und beide Richtungen | <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_239.d408d2f3.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1022_10.cda7bd53.svg" width="40"> + <img src="https://trafficsigns.osm-verkehrswende.org/_next/static/media/DE_1000_31.45488836.svg" width="40"> | `regulatory--pedestrians-only--g1`<br>`complementary--except-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:237 | Radweg | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_237.svg" width="40" alt="DE:237"> | `regulatory--bicycles-only--g1` |
+| DE:240 | Gemeinsamer Geh- und Radweg | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_240.svg" width="40" alt="DE:240"> | `regulatory--shared-path-pedestrians-and-bicycles--g1` |
+| DE:241-30 | Getrennter Rad- und Gehweg (Radweg links) | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_241_30.svg" width="40" alt="DE:241-30"> | `regulatory--dual-path-bicycles-and-pedestrians--g1` |
+| DE:241-31 | Getrennter Rad- und Gehweg (Radweg rechts) | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_241_31.svg" width="40" alt="DE:241-31"> | `regulatory--dual-path-pedestrians-and-bicycles--g1` |
+| DE:239 | Gehweg | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_239.svg" width="40" alt="DE:239"> | `regulatory--pedestrians-only--g1` |
+| DE:1022-10 | Radfahrer frei | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1022_10.svg" width="40" alt="DE:1022-10"> | `complementary--except-bicycles--g1` |
+| DE:1000-31 | Beide Richtungen | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1000_31.svg" width="40" alt="DE:1000-31"> | `complementary--two-way-traffic--g3` |
+| DE:239,1022-10 | Gehweg mit Radfahrer frei | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_239.svg" width="40" alt="DE:239"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1022_10.svg" width="40" alt="DE:1022-10"> | `regulatory--pedestrians-only--g1`<br>`complementary--except-bicycles--g1` |
+| DE:237,1000-31 | Radweg mit beide Richtungen | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_237.svg" width="40" alt="DE:237"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1000_31.svg" width="40" alt="DE:1000-31"> | `regulatory--bicycles-only--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:240,1000-31 | Gemeinsamer Geh- und Radweg mit beide Richtungen | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_240.svg" width="40" alt="DE:240"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1000_31.svg" width="40" alt="DE:1000-31"> | `regulatory--shared-path-pedestrians-and-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:241-30,1000-31 | Getrennter Rad- und Gehweg (links) mit beide Richtungen | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_241_30.svg" width="40" alt="DE:241-30"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1000_31.svg" width="40" alt="DE:1000-31"> | `regulatory--dual-path-bicycles-and-pedestrians--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:241-31,1000-31 | Getrennter Rad- und Gehweg (rechts) mit beide Richtungen | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_241_31.svg" width="40" alt="DE:241-31"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1000_31.svg" width="40" alt="DE:1000-31"> | `regulatory--dual-path-pedestrians-and-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
+| DE:239,1022-10,1000-31 | Gehweg mit Radfahrer frei und beide Richtungen | <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_239.svg" width="40" alt="DE:239"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1022_10.svg" width="40" alt="DE:1022-10"> + <img src="https://cdn.jsdelivr.net/npm/@osm-traffic-signs/converter@0.6.0/dist/data-svgs/DE/svgs/DE_1000_31.svg" width="40" alt="DE:1000-31"> | `regulatory--pedestrians-only--g1`<br>`complementary--except-bicycles--g1`<br>`complementary--two-way-traffic--g3` |
+
+Werden mehrere Zeichen erkannt, kombiniert die Erweiterung sie automatisch: erst die Hauptzeichen, dann die Zusatzzeichen. Die Kombinationen in der Tabelle sind Beispiele dafür.
 
 ## Installation
 
@@ -35,8 +37,8 @@ Die Erweiterung erkennt folgende deutsche Verkehrszeichen:
 
 Die einfachste Methode: Lade eine fertige Version herunter.
 
-1. Gehe zu den [Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/tree/main/releases)
-2. Lade die neueste Version als ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.3.zip`)
+1. Gehe zum [neuesten Release](https://github.com/vizsim/mapillary_image_id_copier_addon/releases/latest)
+2. Lade unter **Assets** die ZIP-Datei herunter (z.B. `mapillary_image_id_copier_addon-v0.4.zip`)
 3. Entpacke die ZIP-Datei in einen Ordner
 4. Öffne Chrome und navigiere zu `chrome://extensions/`
 5. Aktiviere den **"Entwicklermodus"** (Schalter oben rechts)
@@ -116,9 +118,9 @@ Die Erweiterung benötigt folgende Berechtigungen:
 
 - **`activeTab`**: Zugriff auf den aktiven Tab, nur wenn du auf das Icon klickst
 - **`scripting`**: Um Code im Tab auszuführen und Verkehrszeichen zu erkennen
-- **`tabs`**: Um das Traffic Sign Tool in einem neuen Tab zu öffnen
+- **`storage`**: Um deine Einstellungen zu speichern
 
-**Datenschutz**: Die Erweiterung verarbeitet alle Daten lokal in deinem Browser. Es werden keine Daten an externe Server gesendet.
+**Datenschutz**: Die Erweiterung verarbeitet alle Daten lokal in deinem Browser. Es werden keine Daten an externe Server gesendet. Die Erweiterung lädt lediglich die öffentliche Index-Datei des Mapillary Sprite-Sheets (`mapillary_sprites.json`), um die Verkehrszeichen-Symbole zuzuordnen. Das ist dieselbe Datei, die auch die Mapillary-Seite selbst lädt.
 
 ## Entwicklung
 
@@ -133,9 +135,12 @@ mapillary_image_id_copier_addon/
 ├── logo.png               # Extension Icon
 ├── LICENSE                # MIT License
 ├── README.md              # Diese Datei
-├── CHANGELOG.md           # Änderungsprotokoll
-├── releases/              # Build-Artefakte (ZIP-Dateien)
-└── .gitignore            # Git ignore rules
+├── CHANGELOG.md           # Änderungsprotokoll (Quelle der Release-Notes)
+├── RELEASE.md             # Release-Anleitung
+├── build-release.sh       # Baut das Release-ZIP
+├── .github/workflows/     # GitHub Action: Release bei Versions-Tag
+├── releases/              # ZIPs bis v0.3 (neuere unter GitHub Releases)
+└── .gitignore             # Git ignore rules
 ```
 
 ### Technische Details
@@ -143,6 +148,11 @@ mapillary_image_id_copier_addon/
 - **Manifest Version**: 3
 - **Service Worker**: Läuft im Hintergrund und reagiert auf Icon-Klicks
 - **Content Script Injection**: Wird verwendet, um Verkehrszeichen im DOM zu erkennen
+- **Erkennung über den Sprite-Index**: Mapillary zeigt Verkehrszeichen als Ausschnitte (CSS `clip`) aus einem Sprite-Sheet. Die Erweiterung ordnet jede Position über die Index-Datei `mapillary_sprites.json` dem Mapillary-Namen zu (z. B. `regulatory--bicycles-only--g1`) und diesen über `TRAFFIC_SIGN_MAPPING` dem OSM-Code. Ordnet Mapillary das Sprite-Sheet neu an, funktioniert die Erkennung deshalb weiter.
+
+### Fehlersuche
+
+Die Erweiterung schreibt Details zur Erkennung in die Konsole des Service Workers: `chrome://extensions/` öffnen, bei der Erweiterung auf **„Service Worker“** klicken und den Tab **Console** wählen. Dort stehen nach jedem Klick die erkannten Mapillary-Namen, der `traffic_sign`-Wert und Zeichen ohne OSM-Zuordnung (`ohneZuordnung`).
 
 ## Lizenz
 

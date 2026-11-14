@@ -5,6 +5,27 @@ Alle bemerkenswerten Änderungen an diesem Projekt werden in dieser Datei dokume
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4] - 2026-11-14
+
+### Behoben
+- Verkehrszeichen wurden nicht mehr erkannt: Mapillary hat das Sprite-Sheet erneut umgestellt (spätestens Oktober 2026). Die fest hinterlegten Positionen zeigten ins Leere oder auf falsche Zeichen. Zum Beispiel wurde `regulatory--road-closed-to-vehicles--g1` als DE:240 ausgegeben.
+- Wurde kein Verkehrszeichen erkannt, wurde ein leeres `traffic_sign=` kopiert und trotzdem ein grüner Haken angezeigt. Jetzt wird nur die Bild-ID kopiert, und das Badge zeigt ein oranges „?“.
+- Fehler beim Kopieren in die Zwischenablage wurden verschluckt (grüner Haken trotz Fehler). Jetzt erscheint ein rotes „!“.
+- Kombinationen aus Haupt- und Zusatzzeichen werden jetzt allgemein gebildet statt nur für fest einprogrammierte Paare. Vorher konnte z. B. bei DE:239 + DE:1000-31 eines der Zeichen verloren gehen, und das Ergebnis hing von der Reihenfolge im DOM ab.
+- Verkehrszeichen-Bilder in der README wurden nicht mehr angezeigt (404). Sie kommen jetzt aus dem npm-Paket `@osm-traffic-signs/converter` (über jsDelivr).
+- Die Prüfung auf Mapillary-Seiten akzeptierte auch fremde Domains wie `mapillary.com.example.org`.
+- Bei schnellem Doppelklick verschwand das Badge zu früh.
+
+### Geändert
+- Erkennung über die Index-Datei des Sprite-Sheets (`mapillary_sprites.json`): Die Position eines Symbols wird zur Laufzeit dem Mapillary-Namen zugeordnet (z. B. `regulatory--bicycles-only--g1`) und erst dieser Name dem OSM-Code. Künftige Umstellungen des Sprite-Sheets machen die Erkennung damit nicht mehr kaputt.
+- Berechtigung `tabs` entfernt. Sie wurde nicht benötigt und löste bei der Installation die Warnung „Browserverlauf lesen“ aus.
+- Neue Versionen gibt es unter [GitHub Releases](https://github.com/vizsim/mapillary_image_id_copier_addon/releases) statt im Ordner `releases/`. Sie werden beim Setzen eines Versions-Tags automatisch gebaut.
+
+### Technisch
+- `TRAFFIC_SIGN_MAPPING` ordnet jetzt Mapillary-Namen statt clip-Werten zu.
+- Erkennungs-Details (erkannte Mapillary-Namen, `traffic_sign`-Wert, Zeichen ohne Zuordnung) stehen in der Konsole des Service Workers.
+- Ungenutzten Code entfernt und JSDoc korrigiert.
+
 ## [0.3] - 2025-12-09
 
 ### Hinzugefügt
